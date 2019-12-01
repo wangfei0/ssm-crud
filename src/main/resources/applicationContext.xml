@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--开启注解扫描,希望处理service和dao，controller不需要SPring框架处理-->
+    <context:component-scan base-package="com.wf">
+        <!--配置哪些注解不扫描-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--===================Spring整合MyBatis框架===========================-->
+    <!--制定数据源配置信息所在文件-->
+    <context:property-placeholder location="classpath:dbconfig.properties"></context:property-placeholder>
+    <!--配置连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!--配置SqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <!--指定映射文件的位置-->
+        <property name="mapperLocations">
+            <list>
+                <value>classpath:/mapper/**/*.xml</value>
+            </list>
+        </property>
+        <!--配置mybatis的pagehelper分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor"></bean>
+            </array>
+        </property>
+    </bean>
+    <!--配置AccountDao接口所在的包-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.wf.dao"></property>
+    </bean>
+    <!--配置可以执行批量操作的SqlSession对象-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+        <constructor-arg name="executorType" value="BATCH"></constructor-arg>
+    </bean>
+
+
+    <!--======================配置Spring框架声名式事务管理============================-->
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!--配置事务通知,事务如何切入-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!--以find开头的所有方法-->
+            <tx:method name="find*" read-only="true"/>
+            <!--所有方法都是事务方法-->
+            <tx:method name="*" isolation="DEFAULT"></tx:method>
+        </tx:attributes>
+    </tx:advice>
+    <!--配置aop增强-->
+    <aop:config>
+        <!--配置事务增强-->
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.wf.service.impl.*ServiceImpl.*(..))"></aop:advisor>
+    </aop:config>
+
+</beans>
