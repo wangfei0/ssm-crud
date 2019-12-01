@@ -19,7 +19,7 @@
     </context:component-scan>
 
     <!--===================Spring整合MyBatis框架===========================-->
-    <!--制定数据源配置信息所在文件-->
+    <!--指定数据源配置信息所在文件-->
     <context:property-placeholder location="classpath:dbconfig.properties"></context:property-placeholder>
     <!--配置连接池-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">

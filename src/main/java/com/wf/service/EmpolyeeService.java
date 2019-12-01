@@ -51,16 +51,22 @@ public class EmpolyeeService {
     }
 
     /**
-     * 从数据库校验用户名
+     * 从数据库校验用户名,按照条件查找。
      *
      * @param empName
      * @return true:当前用户名可用
      * false:不可用
      */
     public boolean checkUser(String empName) {
+        /**
+         *  按照条件查找时，条件的加入方式
+         */
         EmployeeExample example = new EmployeeExample();
         EmployeeExample.Criteria criteria = example.createCriteria();
         criteria.andEmpNameEqualTo(empName);
+        /**
+         *
+         */
         long count = employeeMapper.countByExample(example);
         return count == 0;
     }
