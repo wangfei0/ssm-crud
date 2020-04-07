@@ -44,6 +44,7 @@
             </array>
         </property>
     </bean>
+
     <!--配置AccountDao接口所在的包-->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.wf.dao"></property>
@@ -60,6 +61,7 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"></property>
     </bean>
+
     <!--配置事务通知,事务如何切入-->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
@@ -69,6 +71,7 @@
             <tx:method name="*" isolation="DEFAULT"></tx:method>
         </tx:attributes>
     </tx:advice>
+
     <!--配置aop增强-->
     <aop:config>
         <!--配置事务增强-->
