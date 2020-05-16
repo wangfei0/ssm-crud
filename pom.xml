@@ -138,7 +138,7 @@
             <version>5.2.1.RELEASE</version>
             <scope>compile</scope>
         </dependency>
-        <!-- 分页插件 -->
+        <!-- pageHelper分页插件 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
