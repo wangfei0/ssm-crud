@@ -32,7 +32,14 @@ import java.util.UUID;
  */
 
 /**
- * Sprng单元测试,可以自动导入包
+ * Spring的项目可以使用Spring的单元测试，可以自动注入需要的组件
+ * 1. 导入SpringTest模块，pom.xml中引入依赖
+ * 2. 使用@ContextConfiguration(locations = {""})指定spring配置文件的位置
+ * 3. 直接@Autowired要用的组件即可
+ */
+
+/**
+ * Spring单元测试,可以自动导入包
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 /**
@@ -53,10 +60,11 @@ public class DaoTest {
     public void testDaoCRUD(){
 //        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
 //        DepartmentMapper departmentMapper = ac.getBean(DepartmentMapper.class);
+          //插入员工信息
 //        departmentMapper.insertSelective(new Department(null,"开发"));
 //        departmentMapper.insertSelective(new Department(null,"测试"));
-
         EmployeeMapper mapper=sqlSession.getMapper(EmployeeMapper.class);
+        //插入员工信息
         for (int i=0;i<1000;i++){
             String uid = UUID.randomUUID().toString().substring(0, 5)+i;
             mapper.insertSelective(new Employee(null,uid,"M",uid+"@qq.com",1));

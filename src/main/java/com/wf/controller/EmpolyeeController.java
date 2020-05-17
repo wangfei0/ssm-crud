@@ -161,7 +161,7 @@ public class EmpolyeeController {
     public String getEmpls(@RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
                            Model model) {
         //引入PageHelper分页插件
-        //在查询之前只需要调用,传入页码以及每一页的大小
+        //在查询之前只需要调用,传入开始页码以及每一页的大小
         PageHelper.startPage(pageNumber, 10);
         //后面紧跟的查询就是一个分页查询
         List<Employee> emps = empolyeeService.getAll();

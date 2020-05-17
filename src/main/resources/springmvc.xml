@@ -9,26 +9,27 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-    
+    <!--springmvc的配置文件，包含网站跳转逻辑的控制，配置-->
     <!--开启注解扫描，只扫描controller注解-->
-    <context:component-scan base-package="com.wf">
+    <context:component-scan base-package="com.wf" use-default-filters="false">
         <!--配置只扫描控制器-->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-    <!--配置视图解析器-->
+    <!--配置视图解析器，方便页面返回-->
     <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
+
     <!--过滤静态资源-->
     <mvc:resources mapping="/css/" location="/css/**"></mvc:resources>
     <mvc:resources mapping="/images/" location="/images/**"></mvc:resources>
     <mvc:resources mapping="/js/" location="/js/**"></mvc:resources>
 
-
-    <!--将srpingmvc不能处理的请求交给tomcat-->
-    <mvc:default-servlet-handler></mvc:default-servlet-handler>
-    <!--开启SpringMVC注解的支持-->
-    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--两个标准配置-->
+    <!--1. 将srpingmvc不能处理的请求交给tomcat-->
+    <mvc:default-servlet-handler/>
+    <!--2.开启SpringMVC对注解的支持，支持springmvc更高级的一些功能，映射动态请求-->
+    <mvc:annotation-driven/>
 
 </beans>

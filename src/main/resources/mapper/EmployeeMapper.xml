@@ -14,6 +14,7 @@
     <result column="gender" jdbcType="CHAR" property="gender" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="d_id" jdbcType="INTEGER" property="dId" />
+    <!--指定联合查询出的部门字段封装-->
     <association property="department" javaType="com.wf.bean.Department">
       <id column="dept_id" jdbcType="INTEGER" property="deptId" />
       <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
@@ -88,6 +89,7 @@
 
        Employee selectByPrimaryKeyWithDept(Integer empId);
   -->
+  <!--查询员工同时带部门信息-->
   <select id="selectByExampleWithDept" resultMap="WithDeptResultMap">
     select
     <if test="distinct">

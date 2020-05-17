@@ -5,14 +5,24 @@
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
 
-    <!--1. 配置解决中外乱码的过滤器-->
+    <!--1. 配置解决中外乱码的字符过滤器，此过滤器一定是在所有其他过滤器之前的-->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <!--初始化属性-->
+        <!--初始化属性，编码格式设置为UTF-8-->
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
+        </init-param>
+        <!--请求编码格式设置为UTF-8-->
+        <init-param>
+            <param-name>forceRequestEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <!--响应编码格式设置为UTF-8-->
+        <init-param>
+            <param-name>forceResponseEncoding</param-name>
+            <param-value>true</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -20,21 +30,27 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--2. 配置Spring的监听器，默认只加载WEB-INF目录下的applicationContext.xml配置文件-->
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    <!--.当url-pattern配置成/*的时候，Tomcat会将所有的请求交给对应的Servlet进行处理，
+            当url-pattern配置成/的时候，多数情况下与/效果一致，
+            但是，当访问的路径正好对应jsp文件时，Tomcat会访问真实的jsp文件
+            而不是把请求交给对应的Servlet处理。-->
+
+    <!--2. 启动spring的容器，配置Spring的监听器，默认只加载WEB-INF目录下的applicationContext.xml配置文件-->
     <!--设置配置文件的路径-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
-    <!--3. 配置前端控制器-->
+
+    <!--3. 配置springmvc的前端控制器，拦截所有请求-->
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <!--加载speingmvc配置文件-->
+        <!--加载springmvc配置文件-->
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:springmvc.xml</param-value>
