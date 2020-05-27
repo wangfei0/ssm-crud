@@ -53,6 +53,12 @@ public class Msg {
         return result;
     }
 
+    /**
+     * 给对象增加数据
+     * @param key
+     * @param value
+     * @return
+     */
     public Msg add(String key, Object value) {
         this.getExtend().put(key, value);
         return this;
