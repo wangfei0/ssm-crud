@@ -168,6 +168,7 @@ public class EmpolyeeController {
         //用PageInfo对结果进行包装,PageInfo包含了非常全面的分页属性,只需要将此对象传给页面
         //可以设置连续显示的页数
         PageInfo page = new PageInfo(emps, 5);
+        //model能够返回到页面中
         model.addAttribute("pageInfo", page);
 
         return "list";
