@@ -12,7 +12,7 @@ package com.wf.controller;
 
 import com.wf.bean.Department;
 import com.wf.bean.Msg;
-import com.wf.service.DepartmentService;
+import com.wf.service.DepartmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +33,7 @@ import java.util.List;
 public class DepartmentController {
 
     @Autowired
-    private DepartmentService departmentService;
+    private DepartmentServiceImpl departmentServiceImpl;
 
     /**
      * 查询所有部门信息
@@ -42,7 +42,7 @@ public class DepartmentController {
     @RequestMapping("/list")
     @ResponseBody
     public Msg getDepts(){
-        List<Department> list = departmentService.getDepts();
+        List<Department> list = departmentServiceImpl.getDepts();
         return Msg.success().add("depts",list);
     }
 }

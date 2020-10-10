@@ -64,10 +64,16 @@
             <version>2.0.3</version>
         </dependency>
         <!-- 数据库连接池 -->
+        <!--<dependency>-->
+        <!--    <groupId>com.mchange</groupId>-->
+        <!--    <artifactId>c3p0</artifactId>-->
+        <!--    <version>0.9.5.4</version>-->
+        <!--</dependency>-->
+        <!--2020.10.11号换为阿里的druid-->
         <dependency>
-            <groupId>com.mchange</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>0.9.5.4</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.1</version>
         </dependency>
         <!-- mysql驱动 -->
         <dependency>

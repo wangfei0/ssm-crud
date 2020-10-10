@@ -26,11 +26,31 @@
     <!--指定数据源配置信息所在文件-->
     <context:property-placeholder location="classpath:dbconfig.properties"></context:property-placeholder>
     <!--配置连接池-->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="${jdbc.driverClass}"></property>
-        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
-        <property name="user" value="${jdbc.username}"></property>
-        <property name="password" value="${jdbc.password}"></property>
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+    <!--    <property name="driverClass" value="${jdbc.driverClass}"></property>-->
+    <!--    <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>-->
+    <!--    <property name="user" value="${jdbc.username}"></property>-->
+    <!--    <property name="password" value="${jdbc.password}"></property>-->
+    <!--</bean>-->
+    <!--2020.10.11号，数据库连接池换为druid-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${jdbc.jdbcUrl}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+        <property name="filters" value="stat" />
+        <property name="maxActive" value="20" />
+        <property name="initialSize" value="1" />
+        <property name="maxWait" value="60000" />
+        <property name="minIdle" value="1" />
+        <property name="timeBetweenEvictionRunsMillis" value="3000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="SELECT * from dual" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
     </bean>
 
     <!--配置SqlSessionFactory对象-->
@@ -74,6 +94,9 @@
     </bean>
 
     <!--开启基于注解的事务，使用xml形式配置的事务（必要主要的都是使用配置式）-->
+    <!--可以使用注解@Transactional开启事务-->
+    <tx:annotation-driven/>
+
     <!--配置aop增强-->
     <aop:config>
         <!--切入点表达式-->

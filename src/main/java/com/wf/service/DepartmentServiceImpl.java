@@ -26,7 +26,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Service
-public class DepartmentService {
+public class DepartmentServiceImpl implements IDepartmentService{
 
     @Autowired
     private DepartmentMapper departmentMapper;
@@ -35,6 +35,7 @@ public class DepartmentService {
      * 查询所有部门信息
      * @return
      */
+    @Override
     public List<Department> getDepts() {
         List<Department> list = departmentMapper.selectByExample(null);
         return list;

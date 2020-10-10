@@ -14,9 +14,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wf.bean.Employee;
 import com.wf.bean.Msg;
-import com.wf.service.EmpolyeeService;
+import com.wf.service.EmpolyeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -40,7 +41,7 @@ import java.util.Map;
 public class EmpolyeeController {
 
     @Autowired
-    EmpolyeeService empolyeeService;
+    EmpolyeeServiceImpl empolyeeServiceImpl;
 
     /**
      * 删除员工,可单个1，可多个1-2-3
@@ -53,14 +54,14 @@ public class EmpolyeeController {
         if (!ids.contains("-")){
             //单个
             Integer id = Integer.parseInt(ids);
-            empolyeeService.deleteEmp(id);
+            empolyeeServiceImpl.deleteEmp(id);
         }else {
             List<Integer> del_ids = new ArrayList<>();
             String[] str_ids = ids.split("-");
             for (String string : str_ids) {
                 del_ids.add(Integer.parseInt(string));
             }
-            empolyeeService.deleteBath(del_ids);
+            empolyeeServiceImpl.deleteBath(del_ids);
         }
         return Msg.success();
     }
@@ -74,7 +75,7 @@ public class EmpolyeeController {
     @ResponseBody
     @RequestMapping(value = "/emp/{empId}", method = RequestMethod.PUT)
     public Msg saveEmp(Employee employee) {
-        empolyeeService.updateEmp(employee);
+        empolyeeServiceImpl.updateEmp(employee);
         return Msg.success();
     }
 
@@ -87,7 +88,7 @@ public class EmpolyeeController {
     @ResponseBody
     @RequestMapping(value = "/emp/{id}", method = RequestMethod.GET)
     public Msg getEmp(@PathVariable("id") Integer id) {
-        Employee employee = empolyeeService.getEmp(id);
+        Employee employee = empolyeeServiceImpl.getEmp(id);
         return Msg.success().add("emp", employee);
     }
 
@@ -106,7 +107,7 @@ public class EmpolyeeController {
             return Msg.fail().add("va_msg", "用户名必须是2-5位中文或者6-16位英文和数字组合");
         }
         //数据库用户名重复校验
-        boolean b = empolyeeService.checkUser(empName);
+        boolean b = empolyeeServiceImpl.checkUser(empName);
         if (b) {
             return Msg.success();
         } else {
@@ -116,11 +117,13 @@ public class EmpolyeeController {
 
     /**
      * 员工保存
+     * 新增员工
      *
      * @return
      */
     @RequestMapping(value = "/emp", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public Msg saveEmp(@Valid Employee employee, BindingResult result) {
         if (result.hasErrors()) {
             //校验失败，应该返回失败,在模态框中显示校验失败的信息
@@ -133,7 +136,7 @@ public class EmpolyeeController {
             }
             return Msg.fail().add("errorFields", map);
         } else {
-            empolyeeService.saveEmp(employee);
+            empolyeeServiceImpl.saveEmp(employee);
             return Msg.success();
         }
     }
@@ -150,7 +153,7 @@ public class EmpolyeeController {
         //在查询之前只需要调用,传入页码以及每一页的大小
         PageHelper.startPage(pageNumber, 10);
         //后面紧跟的查询就是一个分页查询
-        List<Employee> emps = empolyeeService.getAll();
+        List<Employee> emps = empolyeeServiceImpl.getAll();
         //用PageInfo对结果进行包装,PageInfo包含了非常全面的分页属性,只需要将此对象传给页面
         //可以设置连续显示的页数
         PageInfo page = new PageInfo(emps, 5);
@@ -164,7 +167,7 @@ public class EmpolyeeController {
         //在查询之前只需要调用,传入开始页码以及每一页的大小
         PageHelper.startPage(pageNumber, 10);
         //后面紧跟的查询就是一个分页查询
-        List<Employee> emps = empolyeeService.getAll();
+        List<Employee> emps = empolyeeServiceImpl.getAll();
         //用PageInfo对结果进行包装,PageInfo包含了非常全面的分页属性,只需要将此对象传给页面
         //可以设置连续显示的页数
         PageInfo page = new PageInfo(emps, 5);

@@ -27,7 +27,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Service
-public class EmpolyeeService {
+public class EmpolyeeServiceImpl implements IEmployeeService{
 
     @Autowired
     EmployeeMapper employeeMapper;
@@ -37,6 +37,7 @@ public class EmpolyeeService {
      *
      * @return
      */
+    @Override
     public List<Employee> getAll() {
         return employeeMapper.selectByExampleWithDept(null);
     }
@@ -46,6 +47,7 @@ public class EmpolyeeService {
      *
      * @param employee
      */
+    @Override
     public void saveEmp(Employee employee) {
         employeeMapper.insertSelective(employee);
     }
@@ -57,6 +59,7 @@ public class EmpolyeeService {
      * @return true:当前用户名可用
      * false:不可用
      */
+    @Override
     public boolean checkUser(String empName) {
         /**
          *  按照条件查找时，条件的加入方式
@@ -77,6 +80,7 @@ public class EmpolyeeService {
      * @param id
      * @return
      */
+    @Override
     public Employee getEmp(Integer id) {
         Employee employee = employeeMapper.selectByPrimaryKey(id);
         return employee;
@@ -87,6 +91,7 @@ public class EmpolyeeService {
      *
      * @param employee
      */
+    @Override
     public void updateEmp(Employee employee) {
         employeeMapper.updateByPrimaryKeySelective(employee);
     }
@@ -96,6 +101,7 @@ public class EmpolyeeService {
      *
      * @param id
      */
+    @Override
     public void deleteEmp(Integer id) {
         employeeMapper.deleteByPrimaryKey(id);
     }
@@ -104,6 +110,7 @@ public class EmpolyeeService {
      * 批量删除
      * @param ids
      */
+    @Override
     public void deleteBath(List<Integer> ids) {
         EmployeeExample example =new EmployeeExample();
         EmployeeExample.Criteria criteria=example.createCriteria();
